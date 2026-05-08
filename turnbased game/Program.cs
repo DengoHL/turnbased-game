@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 int hp = 100;
 int hpMax = 100;
 int kills = 0;
-int TotalXp = 0;
+int TotalXp = 0; // it is difrent cause i misspelled it
 List<int> enemyHp = new List<int>();
 int damage = 10;
 int enemyDamage = 5;
@@ -28,7 +28,7 @@ string getStats;
 Console.WriteLine("Wellcome User have you played before?");
 Console.WriteLine("Y/N");
 getStats = Console.ReadLine();
-if (getStats == "Y" || getStats == "y")
+if (getStats == "Y" || getStats == "y") //if it breaks here they will not have done anything yet and can just restart fully or from svae if they have one
 {
     PlayerGetStats();
 }
@@ -39,13 +39,13 @@ else if (getStats == "N" || getStats == "n")
     enemyHp.Add(50);
     PrintHud();
 }
-while (hp > 0)
+while (hp > 0) //loops while the player is alive
 {
     PrintHud();
     OnPlayerTurn();
     OnPLayerTurnOver();
 }
-void PrintHud()
+void PrintHud()  //writes the players info so they can see what their stats are
 {
     Thread.Sleep(1000);
     Console.Clear();
@@ -55,9 +55,9 @@ void PrintHud()
         Console.WriteLine();
     }
 }
-void PlayerGetStats()
+void PlayerGetStats() //will get player stats and makes the base stats what is saved
 {
-    if (File.Exists("hp.txt") && File.Exists("lv.txt") && File.Exists("xp.txt") && File.Exists("gold.txt") && File.Exists("enemylv.txt") && File.Exists("enemylist.txt") && File.Exists("enemyhp.txt"))
+    if (File.Exists("hp.txt") && File.Exists("lv.txt") && File.Exists("xp.txt") && File.Exists("gold.txt") && File.Exists("enemylv.txt") && File.Exists("enemylist.txt") && File.Exists("enemyhp.txt")) //chekcs if there are saved stats
     {
         Console.WriteLine("Geting stats.");
         getStats = File.ReadAllText("hp.txt");
@@ -87,13 +87,13 @@ void PlayerGetStats()
         }
         PrintHud();
     }
-    else
+    else //will run if no stats are saved
     {
         Console.WriteLine("No save found starting new");
         Console.WriteLine("A Bandit stoped you"); enemyList.Add(1); enemyHp.Add(50); PrintHud();
     }
 }
-void PlayerSaveStats()
+void PlayerSaveStats() //gets players current stats and overides the previoce saved stats with the new or makes wthe save file if first time saveing
 {
     Console.WriteLine("Saving stats...");
     getStats = $"{hp}";
@@ -113,10 +113,10 @@ void PlayerSaveStats()
     File.WriteAllText("enemyhp.txt", string.Join(" ", enemyHp));
     Console.WriteLine("Stats saved.");
 }
-void OnPLayerTurnOver()
+void OnPLayerTurnOver() //will run when player turn ends and just randomemises an int to make the enemys do difrent moves
 {
     int rndspawn = rand.Next(0, 5);
-    if (enemyList.Count == 0 || rndspawn == 1)
+    if (enemyList.Count == 0 || rndspawn == 1) //runs code if the randome spawn int is 0 or if there are no enemyes alive
     {
         int spawn = rand.Next(0, 3);
         if (spawn == 0)
@@ -161,9 +161,9 @@ void OnPLayerTurnOver()
     }
     denfending = false;
 }
-void OnPlayerTurn()
+void OnPlayerTurn() //the players actions and the level up system
 {
-    if (changed && !charge)
+    if (changed && !charge) //checks if the player has charged and did it last move and if yes sets stats back to normal
     { damage -= 10; changed = false; }
     Console.WriteLine("Your turn");
     Console.WriteLine("Your moves");
@@ -210,7 +210,7 @@ void OnPlayerTurn()
             enemyList.RemoveAt(playerChose2 - 1);
             enemyHp.RemoveAt(playerChose2 - 1);
         }
-    }
+    } //level up system below this
     if (needXp <= xp) { Console.WriteLine("Level up!"); level += 1; TotalXp += xp; xp -= needXp; needXp = 100 * level; hp += 100; if (!charge) { damage += 10 * level; } else { damage -= 10; damage += 10 * level; damage += 10; } enemyLevel++; }
     if (hp <= 0)
     {
@@ -218,9 +218,9 @@ void OnPlayerTurn()
         Console.WriteLine("Stats are not saved when you lose so can retry from last save"); onlose();
     }
 }
-void onlose()
+void onlose()//runs if the player dies and waits to see if they want to try again or stop playing
 {
-    Console.WriteLine("choose 1 and enter to retry or just enter to end game");
+    Console.WriteLine("choose 1 and press enter to retry or just press enter to end game");
     playerChose1 = int.Parse(Console.ReadLine());
     if (playerChose1 == 1)
     {
